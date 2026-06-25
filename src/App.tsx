@@ -17,9 +17,10 @@ import { MorningCheckIn } from './components/MorningCheckIn';
 import { EveningCheckIn } from './components/EveningCheckIn';
 import { HistoryLog } from './components/HistoryLog';
 import { MonthlyReview } from './components/MonthlyReview';
-import { Home, Calendar, BookOpen, Leaf } from 'lucide-react';
+import { Settings } from './components/Settings';
+import { Home, Calendar, BookOpen, Leaf, Settings as SettingsIcon } from 'lucide-react';
 
-type View = 'dashboard' | 'history' | 'review' | 'morning' | 'evening';
+type View = 'dashboard' | 'history' | 'review' | 'morning' | 'evening' | 'settings';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -193,23 +194,48 @@ function App() {
             getMonthlyReviewFromDB={handleGetMonthlyReview}
           />
         );
+      case 'settings':
+        return (
+          <Settings 
+            onBack={() => setCurrentView('dashboard')}
+            onImportSuccess={loadData}
+          />
+        );
       default:
         return <div>View nicht gefunden.</div>;
     }
   };
 
-  const isFormView = currentView === 'morning' || currentView === 'evening';
+  const isFormView = currentView === 'morning' || currentView === 'evening' || currentView === 'settings';
 
   return (
     <div className="app-container">
       {/* Sticky App Header */}
       <header className="app-header">
-        <div className="brand">
+        <div className="brand" onClick={() => setCurrentView('dashboard')} style={{ cursor: 'pointer' }}>
           <Leaf className="brand-icon" strokeWidth={2.5} />
           <h1 className="brand-title">Rooted</h1>
         </div>
-        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
-          selbstreflektion
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
+            selbstreflektion
+          </div>
+          <button 
+            onClick={() => setCurrentView('settings')}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              color: currentView === 'settings' ? 'var(--clay)' : 'var(--text-muted)', 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '4px',
+              transition: 'var(--transition-smooth)'
+            }}
+            title="Einstellungen"
+          >
+            <SettingsIcon size={20} />
+          </button>
         </div>
       </header>
 
