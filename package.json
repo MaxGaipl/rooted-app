@@ -9,9 +9,14 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "app:build": "npm run build && npx cap sync",
+    "app:build-apk": "npm run app:build && cd android && ./gradlew assembleDebug"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
     "idb": "^8.0.3",
     "lucide-react": "^1.21.0",
     "react": "^19.2.7",
